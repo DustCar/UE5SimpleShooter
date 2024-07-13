@@ -1,0 +1,92 @@
+// Fill out your copyright notice in the Description page of Project Settings.
+
+
+#include "SimpleShooterCharacter.h"
+#include "EnhancedInputSubsystems.h"
+#include "EnhancedInput/Public/EnhancedInputComponent.h"
+#include "SimpleShooterInputConfigData.h"
+#include "InputActionValue.h"
+
+// Sets default values
+ASimpleShooterCharacter::ASimpleShooterCharacter()
+{
+ 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	PrimaryActorTick.bCanEverTick = true;
+
+}
+
+// Called when the game starts or when spawned
+void ASimpleShooterCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+	
+}
+
+// Called every frame
+void ASimpleShooterCharacter::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+}
+
+// Called to bind functionality to input
+void ASimpleShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+{
+	Super::SetupPlayerInputComponent(PlayerInputComponent);
+
+	APlayerController* PC = Cast<APlayerController>(GetController());
+	if (PC == nullptr)
+	{
+		return;
+	}
+
+	if (UEnhancedInputLocalPlayerSubsystem* LocalSubsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PC->GetLocalPlayer()))
+	{
+		LocalSubsystem->ClearAllMappings();
+		LocalSubsystem->AddMappingContext(InputMapping, 0);
+	}
+	
+
+	UEnhancedInputComponent* PEI = Cast<UEnhancedInputComponent>(PlayerInputComponent);
+	PEI->BindAction(InputActions->InputMove, ETriggerEvent::Triggered, this, &ASimpleShooterCharacter::Move);
+	PEI->BindAction(InputActions->InputLook, ETriggerEvent::Triggered, this, &ASimpleShooterCharacter::Look);
+	PEI->BindAction(InputActions->InputJump, ETriggerEvent::Triggered, this, &ACharacter::Jump);
+}
+
+void ASimpleShooterCharacter::Move(const struct FInputActionValue& InVal)
+{
+	if (Controller != nullptr)
+	{
+		const FVector2D MoveValue = InVal.Get<FVector2D>();
+
+		if (MoveValue.Y != 0.f)
+		{
+			AddMovementInput(GetActorForwardVector() * MoveValue.Y);
+		}
+
+		if (MoveValue.X != 0.f)
+		{
+			AddMovementInput(GetActorRightVector() * MoveValue.X);
+		}
+	}
+	
+}
+
+void ASimpleShooterCharacter::Look(const FInputActionValue& InVal)
+{
+	if (Controller != nullptr)
+	{
+		const FVector2D LookValue = InVal.Get<FVector2D>();
+
+		if (LookValue.X != 0)
+		{
+			AddControllerYawInput(LookValue.X * (LookSensitivity/100));
+		}
+
+		if (LookValue.Y != 0)
+		{
+			AddControllerPitchInput(-LookValue.Y * (LookSensitivity/100));
+		}
+	}
+}
+
