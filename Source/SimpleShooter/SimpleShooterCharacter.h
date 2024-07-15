@@ -33,11 +33,24 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 private:
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+	class USpringArmComponent* SpringArm;
+
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+	class UCameraComponent* PlayerCamera;
+	
 	void Move(const struct FInputActionValue& InVal);
 
 	void Look(const FInputActionValue& InVal);
 
+	void ControllerLook(const FInputActionValue& InVal);
+
 	UPROPERTY(EditAnywhere, Category = "Enanced Input", meta=(UImin = 1, UIMax = 100))
 	float LookSensitivity = 1;
 
+	UPROPERTY(EditAnywhere, Category = "Enanced Input", meta=(UImin = 1, UIMax = 100))
+	float ControllerSensitivity = 1;
+
+	UPROPERTY(EditAnywhere, Category = "Enanced Input")
+	float ControllerSenMlt = 1;
 };

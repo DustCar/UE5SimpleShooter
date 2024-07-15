@@ -6,6 +6,8 @@
 #include "EnhancedInput/Public/EnhancedInputComponent.h"
 #include "SimpleShooterInputConfigData.h"
 #include "InputActionValue.h"
+#include "Camera/CameraComponent.h"
+#include "GameFramework/SpringArmComponent.h"
 
 // Sets default values
 ASimpleShooterCharacter::ASimpleShooterCharacter()
@@ -13,6 +15,11 @@ ASimpleShooterCharacter::ASimpleShooterCharacter()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmComp"));
+	SpringArm->SetupAttachment(RootComponent);
+
+	PlayerCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("PlayerCameraComp"));
+	PlayerCamera->SetupAttachment(SpringArm);
 }
 
 // Called when the game starts or when spawned
@@ -50,6 +57,7 @@ void ASimpleShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerI
 	UEnhancedInputComponent* PEI = Cast<UEnhancedInputComponent>(PlayerInputComponent);
 	PEI->BindAction(InputActions->InputMove, ETriggerEvent::Triggered, this, &ASimpleShooterCharacter::Move);
 	PEI->BindAction(InputActions->InputLook, ETriggerEvent::Triggered, this, &ASimpleShooterCharacter::Look);
+	PEI->BindAction(InputActions->InputControllerLook, ETriggerEvent::Triggered, this, &ASimpleShooterCharacter::ControllerLook);
 	PEI->BindAction(InputActions->InputJump, ETriggerEvent::Triggered, this, &ACharacter::Jump);
 }
 
@@ -80,12 +88,30 @@ void ASimpleShooterCharacter::Look(const FInputActionValue& InVal)
 
 		if (LookValue.X != 0)
 		{
-			AddControllerYawInput(LookValue.X * (LookSensitivity/100));
+			AddControllerYawInput(LookValue.X * LookSensitivity * GetWorld()->GetDeltaSeconds());
 		}
 
 		if (LookValue.Y != 0)
 		{
-			AddControllerPitchInput(-LookValue.Y * (LookSensitivity/100));
+			AddControllerPitchInput(-LookValue.Y * LookSensitivity * GetWorld()->GetDeltaSeconds());
+		}
+	}
+}
+
+void ASimpleShooterCharacter::ControllerLook(const FInputActionValue& InVal)
+{
+	if (Controller != nullptr)
+	{
+		const FVector2D LookValue = InVal.Get<FVector2D>();
+
+		if (LookValue.X != 0)
+		{
+			AddControllerYawInput(LookValue.X * (ControllerSensitivity * ControllerSenMlt) * GetWorld()->GetDeltaSeconds());
+		}
+
+		if (LookValue.Y != 0)
+		{
+			AddControllerPitchInput(LookValue.Y * (ControllerSensitivity * ControllerSenMlt) * GetWorld()->GetDeltaSeconds());
 		}
 	}
 }

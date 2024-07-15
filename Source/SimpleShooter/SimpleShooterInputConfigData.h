@@ -23,5 +23,8 @@ public:
 	UInputAction* InputLook;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UInputAction* InputControllerLook;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	UInputAction* InputJump;
 };
