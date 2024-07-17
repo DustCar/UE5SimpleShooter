@@ -47,6 +47,7 @@ void ASimpleShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerI
 		return;
 	}
 
+	// get local subsystem from local player and clear mappings to add custom IMC
 	if (UEnhancedInputLocalPlayerSubsystem* LocalSubsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PC->GetLocalPlayer()))
 	{
 		LocalSubsystem->ClearAllMappings();

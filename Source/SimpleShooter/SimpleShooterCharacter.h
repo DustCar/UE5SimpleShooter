@@ -45,9 +45,11 @@ private:
 
 	void ControllerLook(const FInputActionValue& InVal);
 
+	// sensitivity for mouse
 	UPROPERTY(EditAnywhere, Category = "Enanced Input", meta=(UImin = 1, UIMax = 100))
 	float LookSensitivity = 1;
 
+	// sensitivity for controller
 	UPROPERTY(EditAnywhere, Category = "Enanced Input", meta=(UImin = 1, UIMax = 100))
 	float ControllerSensitivity = 1;
 
