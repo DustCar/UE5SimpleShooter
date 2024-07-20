@@ -33,10 +33,10 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 private:
-	UPROPERTY(VisibleAnywhere, Category = "Components")
+	UPROPERTY(VisibleAnywhere)
 	class USpringArmComponent* SpringArm;
 
-	UPROPERTY(VisibleAnywhere, Category = "Components")
+	UPROPERTY(VisibleAnywhere)
 	class UCameraComponent* PlayerCamera;
 	
 	void Move(const struct FInputActionValue& InVal);
@@ -55,4 +55,8 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "Enanced Input")
 	float ControllerSenMlt = 1;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	TSubclassOf<class ASimpleShooterGun> GunClass;
+	
 };

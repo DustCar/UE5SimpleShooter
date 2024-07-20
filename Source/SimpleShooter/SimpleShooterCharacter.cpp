@@ -6,6 +6,7 @@
 #include "EnhancedInput/Public/EnhancedInputComponent.h"
 #include "SimpleShooterInputConfigData.h"
 #include "InputActionValue.h"
+#include "SimpleShooterGun.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 
@@ -26,6 +27,8 @@ ASimpleShooterCharacter::ASimpleShooterCharacter()
 void ASimpleShooterCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+	ASimpleShooterGun* MainGun = GetWorld()->SpawnActor<ASimpleShooterGun>(GunClass);
 	
 }
 
@@ -33,7 +36,7 @@ void ASimpleShooterCharacter::BeginPlay()
 void ASimpleShooterCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
+	
 }
 
 // Called to bind functionality to input
