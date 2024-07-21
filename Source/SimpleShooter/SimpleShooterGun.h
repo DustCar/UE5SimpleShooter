@@ -31,4 +31,7 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 	USkeletalMeshComponent* GunMesh;
+
+	UPROPERTY(EditAnywhere, Category = "Effects")
+	UParticleSystem* MuzzleParticles;
 };

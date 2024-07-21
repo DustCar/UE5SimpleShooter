@@ -2,6 +2,7 @@
 
 
 #include "SimpleShooterGun.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 ASimpleShooterGun::ASimpleShooterGun()
@@ -19,6 +20,25 @@ ASimpleShooterGun::ASimpleShooterGun()
 void ASimpleShooterGun::PullTrigger()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Shoot"));
+	UGameplayStatics::SpawnEmitterAttached(MuzzleParticles, GunMesh, TEXT("MuzzleFlashSocket"));
+
+	APawn* OwnerPawn = Cast<APawn>(GetOwner());
+	if (OwnerPawn == nullptr)
+	{
+		return;
+	}
+
+	AController* OwnerController = OwnerPawn->GetController();
+	if (OwnerController == nullptr)
+	{
+		return;
+	}
+
+	FVector OVPLocation;
+	FRotator OVPRotation;
+	OwnerController->GetPlayerViewPoint(OVPLocation, OVPRotation);
+
+	DrawDebugCamera(GetWorld(), OVPLocation, OVPRotation, 90, 1, FColor::Red, true);
 }
 
 // Called when the game starts or when spawned
