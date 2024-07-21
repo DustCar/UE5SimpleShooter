@@ -16,6 +16,11 @@ ASimpleShooterGun::ASimpleShooterGun()
 	GunMesh->SetupAttachment(RootComp);
 }
 
+void ASimpleShooterGun::PullTrigger()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Shoot"));
+}
+
 // Called when the game starts or when spawned
 void ASimpleShooterGun::BeginPlay()
 {

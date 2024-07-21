@@ -28,8 +28,10 @@ void ASimpleShooterCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	ASimpleShooterGun* MainGun = GetWorld()->SpawnActor<ASimpleShooterGun>(GunClass);
-	
+	MainGun = GetWorld()->SpawnActor<ASimpleShooterGun>(GunClass);
+	GetMesh()->HideBoneByName(TEXT("weapon_r"), EPhysBodyOp::PBO_None);
+	MainGun->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("WeaponSocket"));
+	MainGun->SetOwner(this);
 }
 
 // Called every frame
@@ -63,6 +65,7 @@ void ASimpleShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerI
 	PEI->BindAction(InputActions->InputLook, ETriggerEvent::Triggered, this, &ASimpleShooterCharacter::Look);
 	PEI->BindAction(InputActions->InputControllerLook, ETriggerEvent::Triggered, this, &ASimpleShooterCharacter::ControllerLook);
 	PEI->BindAction(InputActions->InputJump, ETriggerEvent::Triggered, this, &ACharacter::Jump);
+	PEI->BindAction(InputActions->InputFire, ETriggerEvent::Triggered, this, &ASimpleShooterCharacter::Fire);
 }
 
 void ASimpleShooterCharacter::Move(const struct FInputActionValue& InVal)
@@ -81,7 +84,6 @@ void ASimpleShooterCharacter::Move(const struct FInputActionValue& InVal)
 			AddMovementInput(GetActorRightVector() * MoveValue.X);
 		}
 	}
-	
 }
 
 void ASimpleShooterCharacter::Look(const FInputActionValue& InVal)
@@ -118,5 +120,10 @@ void ASimpleShooterCharacter::ControllerLook(const FInputActionValue& InVal)
 			AddControllerPitchInput(LookValue.Y * (ControllerSensitivity * ControllerSenMlt) * GetWorld()->GetDeltaSeconds());
 		}
 	}
+}
+
+void ASimpleShooterCharacter::Fire()
+{
+	MainGun->PullTrigger();
 }
 

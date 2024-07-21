@@ -38,12 +38,17 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 	class UCameraComponent* PlayerCamera;
+
+	UPROPERTY()
+	class ASimpleShooterGun* MainGun;
 	
 	void Move(const struct FInputActionValue& InVal);
 
 	void Look(const FInputActionValue& InVal);
 
 	void ControllerLook(const FInputActionValue& InVal);
+
+	void Fire();
 
 	// sensitivity for mouse
 	UPROPERTY(EditAnywhere, Category = "Enanced Input", meta=(UImin = 1, UIMax = 100))
