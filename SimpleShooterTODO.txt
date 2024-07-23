@@ -1,0 +1,3 @@
+Possible New Mechanics:
+- Crouch and Roll
+- Zoom in

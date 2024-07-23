@@ -34,4 +34,13 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "Effects")
 	UParticleSystem* MuzzleParticles;
+
+	UPROPERTY(EditAnywhere, Category = "Effects")
+	UParticleSystem* HitParticles;
+
+	UPROPERTY(EditAnywhere, Category = "Combat")
+	float GunRange = 1500.f;
+
+	UPROPERTY(EditAnywhere, Category = "Combat")
+	float GunDamage = 10.f;
 };

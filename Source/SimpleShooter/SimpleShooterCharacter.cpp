@@ -21,6 +21,7 @@ ASimpleShooterCharacter::ASimpleShooterCharacter()
 
 	PlayerCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("PlayerCameraComp"));
 	PlayerCamera->SetupAttachment(SpringArm);
+	
 }
 
 // Called when the game starts or when spawned
@@ -32,6 +33,7 @@ void ASimpleShooterCharacter::BeginPlay()
 	GetMesh()->HideBoneByName(TEXT("weapon_r"), EPhysBodyOp::PBO_None);
 	MainGun->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("WeaponSocket"));
 	MainGun->SetOwner(this);
+	
 }
 
 // Called every frame
