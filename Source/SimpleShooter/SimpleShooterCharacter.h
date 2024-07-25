@@ -31,6 +31,9 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	
+	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
+
 
 private:
 	UPROPERTY(VisibleAnywhere)
@@ -49,6 +52,12 @@ private:
 	void ControllerLook(const FInputActionValue& InVal);
 
 	void Fire();
+
+	UPROPERTY(EditDefaultsOnly, Category= "Health")
+	float MaxHealth = 100.f;
+
+	UPROPERTY(EditDefaultsOnly, Category= "Health")
+	float CurrHealth;
 
 	// sensitivity for mouse
 	UPROPERTY(EditAnywhere, Category = "Enanced Input", meta=(UImin = 1, UIMax = 100))

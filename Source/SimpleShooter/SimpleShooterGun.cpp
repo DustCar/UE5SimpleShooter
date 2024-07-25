@@ -16,6 +16,7 @@ ASimpleShooterGun::ASimpleShooterGun()
 
 	GunMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("GunMesh"));
 	GunMesh->SetupAttachment(RootComp);
+
 }
 
 void ASimpleShooterGun::PullTrigger()

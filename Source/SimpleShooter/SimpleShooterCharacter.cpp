@@ -33,7 +33,8 @@ void ASimpleShooterCharacter::BeginPlay()
 	GetMesh()->HideBoneByName(TEXT("weapon_r"), EPhysBodyOp::PBO_None);
 	MainGun->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("WeaponSocket"));
 	MainGun->SetOwner(this);
-	
+
+	CurrHealth = MaxHealth;
 }
 
 // Called every frame
@@ -60,7 +61,6 @@ void ASimpleShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerI
 		LocalSubsystem->ClearAllMappings();
 		LocalSubsystem->AddMappingContext(InputMapping, 0);
 	}
-	
 
 	UEnhancedInputComponent* PEI = Cast<UEnhancedInputComponent>(PlayerInputComponent);
 	PEI->BindAction(InputActions->InputMove, ETriggerEvent::Triggered, this, &ASimpleShooterCharacter::Move);
@@ -68,6 +68,20 @@ void ASimpleShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerI
 	PEI->BindAction(InputActions->InputControllerLook, ETriggerEvent::Triggered, this, &ASimpleShooterCharacter::ControllerLook);
 	PEI->BindAction(InputActions->InputJump, ETriggerEvent::Triggered, this, &ACharacter::Jump);
 	PEI->BindAction(InputActions->InputFire, ETriggerEvent::Triggered, this, &ASimpleShooterCharacter::Fire);
+}
+
+float ASimpleShooterCharacter::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser)
+{
+	float DamageTaken = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+	if (DamageTaken > 0)
+	{
+		// Take the min of DamageTaken and CurrHealth in case actor takes more damage than health
+		DamageTaken = FMath::Min(DamageTaken, CurrHealth);
+		CurrHealth -= DamageTaken;
+		UE_LOG(LogTemp, Warning, TEXT("%s Health: %f; Took %f Damage"), *this->GetName(), CurrHealth, DamageTaken)
+	}
+
+	return DamageTaken;
 }
 
 void ASimpleShooterCharacter::Move(const struct FInputActionValue& InVal)

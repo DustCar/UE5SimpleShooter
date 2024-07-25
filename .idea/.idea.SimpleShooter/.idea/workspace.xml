@@ -72,13 +72,6 @@
     "nodejs_package_manager_path": "npm",
     "settings.editor.selected.configurable": "CodeLensConfigurable",
     "vue.rearranger.settings.migration": "true"
-  },
-  "keyToStringList": {
-    "rider.external.source.directories": [
-      "C:\\Users\\Dustin G Carmelo\\AppData\\Roaming\\JetBrains\\Rider2024.2\\resharper-host\\DecompilerCache",
-      "C:\\Users\\Dustin G Carmelo\\AppData\\Roaming\\JetBrains\\Rider2024.2\\resharper-host\\SourcesCache",
-      "C:\\Users\\Dustin G Carmelo\\AppData\\Local\\Symbols\\src"
-    ]
   }
 }]]></component>
   <component name="RunManager">
@@ -168,7 +161,8 @@
       <workItem from="1721512024192" duration="5812000" />
       <workItem from="1721589327740" duration="3129000" />
       <workItem from="1721596332484" duration="115000" />
-      <workItem from="1721673930144" duration="12945000" />
+      <workItem from="1721673930144" duration="13351000" />
+      <workItem from="1721872576452" duration="1752000" />
     </task>
     <task id="LOCAL-00001" summary="Commit blank project">
       <option name="closed" value="true" />
