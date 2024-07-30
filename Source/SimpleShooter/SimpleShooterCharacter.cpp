@@ -78,10 +78,19 @@ float ASimpleShooterCharacter::TakeDamage(float DamageAmount, struct FDamageEven
 		// Take the min of DamageTaken and CurrHealth in case actor takes more damage than health
 		DamageTaken = FMath::Min(DamageTaken, CurrHealth);
 		CurrHealth -= DamageTaken;
-		UE_LOG(LogTemp, Warning, TEXT("%s Health: %f; Took %f Damage"), *this->GetName(), CurrHealth, DamageTaken)
 	}
 
 	return DamageTaken;
+}
+
+bool ASimpleShooterCharacter::IsCharacterDead() const
+{
+	if (CurrHealth <= 0)
+	{
+		return true;
+	}
+
+	return false;
 }
 
 void ASimpleShooterCharacter::Move(const struct FInputActionValue& InVal)

@@ -1,3 +1,4 @@
 Possible New Mechanics:
 - Crouch and Roll
 - Zoom in
+- If AI Line of Sight doesn't change, change it to AIPerception System
