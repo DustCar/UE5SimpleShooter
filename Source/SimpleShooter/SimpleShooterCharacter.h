@@ -37,6 +37,8 @@ public:
 	UFUNCTION(BlueprintPure)
 	bool IsCharacterDead() const;
 
+	void Fire();
+
 private:
 	UPROPERTY(VisibleAnywhere)
 	class USpringArmComponent* SpringArm;
@@ -52,8 +54,6 @@ private:
 	void Look(const FInputActionValue& InVal);
 
 	void ControllerLook(const FInputActionValue& InVal);
-
-	void Fire();
 
 	UPROPERTY(EditDefaultsOnly, Category= "Health")
 	float MaxHealth = 100.f;
