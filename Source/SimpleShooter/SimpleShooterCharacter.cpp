@@ -6,8 +6,10 @@
 #include "EnhancedInput/Public/EnhancedInputComponent.h"
 #include "SimpleShooterInputConfigData.h"
 #include "InputActionValue.h"
+#include "SimpleShooterGameModeBase.h"
 #include "SimpleShooterGun.h"
 #include "Camera/CameraComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 
 // Sets default values
@@ -80,10 +82,21 @@ float ASimpleShooterCharacter::TakeDamage(float DamageAmount, struct FDamageEven
 		CurrHealth -= DamageTaken;
 	}
 
+	if (CharacterIsDead() && GetCapsuleComponent()->IsCollisionEnabled())
+	{
+		ASimpleShooterGameModeBase* GameMode = GetWorld()->GetAuthGameMode<ASimpleShooterGameModeBase>();
+		if (GameMode != nullptr)
+		{
+			GameMode->PawnKilled(this);
+		}
+		DetachFromControllerPendingDestroy();
+		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	}
+
 	return DamageTaken;
 }
 
-bool ASimpleShooterCharacter::IsCharacterDead() const
+bool ASimpleShooterCharacter::CharacterIsDead() const
 {
 	if (CurrHealth <= 0)
 	{
@@ -95,17 +108,26 @@ bool ASimpleShooterCharacter::IsCharacterDead() const
 
 void ASimpleShooterCharacter::Move(const struct FInputActionValue& InVal)
 {
-	if (Controller != nullptr)
+	APlayerController* PC = GetLocalViewingPlayerController();
+	if (PC != nullptr)
 	{
 		const FVector2D MoveValue = InVal.Get<FVector2D>();
 
 		if (MoveValue.Y != 0.f)
 		{
+			if (PC->IsInputKeyDown(EKeys::W) && PC->IsInputKeyDown(EKeys::S))
+			{
+				return;
+			}
 			AddMovementInput(GetActorForwardVector() * MoveValue.Y);
 		}
 
 		if (MoveValue.X != 0.f)
 		{
+			if (PC->IsInputKeyDown(EKeys::A) && PC->IsInputKeyDown(EKeys::D))
+			{
+				return;
+			}
 			AddMovementInput(GetActorRightVector() * MoveValue.X);
 		}
 	}

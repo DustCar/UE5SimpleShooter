@@ -50,7 +50,10 @@ void ASimpleShooterGun::PullTrigger()
 
 	// Get a hit using Trace Channels so that bullet can hit anything that can stop it
 	FHitResult Hit;
-	bool bSuccessHit = GetWorld()->LineTraceSingleByChannel(Hit, OVPLocation, EndLocation, ECollisionChannel::ECC_GameTraceChannel1);
+	FCollisionQueryParams Params;
+	Params.AddIgnoredActor(this);
+	Params.AddIgnoredActor(GetOwner());
+	bool bSuccessHit = GetWorld()->LineTraceSingleByChannel(Hit, OVPLocation, EndLocation, ECollisionChannel::ECC_GameTraceChannel1, Params);
 
 	// If hit found, spawn particles at location and deal damage to actor, if the hit is an actor
 	if (bSuccessHit)

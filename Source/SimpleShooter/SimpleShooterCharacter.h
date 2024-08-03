@@ -35,7 +35,7 @@ public:
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 
 	UFUNCTION(BlueprintPure)
-	bool IsCharacterDead() const;
+	bool CharacterIsDead() const;
 
 	void Fire();
 
