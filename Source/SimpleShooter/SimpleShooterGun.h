@@ -26,6 +26,11 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 private:
+	
+	AController* GetOwnerController() const; 
+	
+	bool GunTrace(FHitResult& OutHit) const;
+	
 	UPROPERTY(VisibleAnywhere)
 	USceneComponent* RootComp;
 

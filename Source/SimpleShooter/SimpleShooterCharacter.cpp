@@ -82,7 +82,7 @@ float ASimpleShooterCharacter::TakeDamage(float DamageAmount, struct FDamageEven
 		CurrHealth -= DamageTaken;
 	}
 
-	if (CharacterIsDead() && GetCapsuleComponent()->IsCollisionEnabled())
+	if (IsDead() && GetCapsuleComponent()->IsCollisionEnabled())
 	{
 		ASimpleShooterGameModeBase* GameMode = GetWorld()->GetAuthGameMode<ASimpleShooterGameModeBase>();
 		if (GameMode != nullptr)
@@ -96,14 +96,9 @@ float ASimpleShooterCharacter::TakeDamage(float DamageAmount, struct FDamageEven
 	return DamageTaken;
 }
 
-bool ASimpleShooterCharacter::CharacterIsDead() const
+bool ASimpleShooterCharacter::IsDead() const
 {
-	if (CurrHealth <= 0)
-	{
-		return true;
-	}
-
-	return false;
+	return CurrHealth <= 0;
 }
 
 void ASimpleShooterCharacter::Move(const struct FInputActionValue& InVal)
@@ -115,6 +110,7 @@ void ASimpleShooterCharacter::Move(const struct FInputActionValue& InVal)
 
 		if (MoveValue.Y != 0.f)
 		{
+			// cancels movement for Keyboard players if opposite keys are pressed
 			if (PC->IsInputKeyDown(EKeys::W) && PC->IsInputKeyDown(EKeys::S))
 			{
 				return;

@@ -16,7 +16,7 @@ ASimpleShooterGun::ASimpleShooterGun()
 
 	GunMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("GunMesh"));
 	GunMesh->SetupAttachment(RootComp);
-
+	
 }
 
 void ASimpleShooterGun::PullTrigger()
@@ -24,20 +24,59 @@ void ASimpleShooterGun::PullTrigger()
 	// Spawns muzzle flash particles at socket on GunMesh
 	UGameplayStatics::SpawnEmitterAttached(MuzzleParticles, GunMesh, TEXT("MuzzleFlashSocket"));
 
+	FHitResult Hit;
+	bool bSuccessHit = GunTrace(Hit);
+
+	// If hit found, spawn particles at location and deal damage to actor, if the hit is an actor
+	if (bSuccessHit)
+	{
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HitParticles, Hit.ImpactPoint, Hit.ImpactNormal.Rotation());
+		if (AActor* DamagedActor = Hit.GetActor())
+		{
+			FPointDamageEvent GunDamageEvent(GunDamage, Hit, Hit.ImpactNormal, nullptr);
+			AController* OwnerController = GetOwnerController();
+			DamagedActor->TakeDamage(GunDamage, GunDamageEvent, OwnerController, this);
+		}
+	}
+}
+
+// Called when the game starts or when spawned
+void ASimpleShooterGun::BeginPlay()
+{
+	Super::BeginPlay();
+	
+}
+
+// Called every frame
+void ASimpleShooterGun::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+}
+
+
+AController* ASimpleShooterGun::GetOwnerController() const
+{
 	// Get owner pawn to use for GetController
-	APawn* OwnerPawn = Cast<APawn>(GetOwner());
+	APawn *OwnerPawn = Cast<APawn>(GetOwner());
 	if (OwnerPawn == nullptr)
 	{
-		return;
+		return nullptr;
 	}
-
+	
 	// Get controller for to get player viewpoint
-	AController* OwnerController = OwnerPawn->GetController();
+	return OwnerPawn->GetController();
+}
+
+// function that returns a hit result from a trace
+bool ASimpleShooterGun::GunTrace(FHitResult& OutHit) const
+{
+	AController* OwnerController = GetOwnerController();
 	if (OwnerController == nullptr)
 	{
-		return;
+		return false;
 	}
-
+	
 	// Grab location and rotation of player's view and store in vars
 	FVector OVPLocation;
 	FRotator OVPRotation;
@@ -49,35 +88,10 @@ void ASimpleShooterGun::PullTrigger()
 	FVector EndLocation = OVPLocation + OVPRotation.Vector() * GunRange;
 
 	// Get a hit using Trace Channels so that bullet can hit anything that can stop it
-	FHitResult Hit;
 	FCollisionQueryParams Params;
 	Params.AddIgnoredActor(this);
 	Params.AddIgnoredActor(GetOwner());
-	bool bSuccessHit = GetWorld()->LineTraceSingleByChannel(Hit, OVPLocation, EndLocation, ECollisionChannel::ECC_GameTraceChannel1, Params);
-
-	// If hit found, spawn particles at location and deal damage to actor, if the hit is an actor
-	if (bSuccessHit)
-	{
-		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HitParticles, Hit.ImpactPoint, Hit.ImpactNormal.Rotation());
-		if (AActor* DamagedActor = Hit.GetActor())
-		{
-			FPointDamageEvent GunDamageEvent(GunDamage, Hit, Hit.ImpactNormal, nullptr);
-			DamagedActor->TakeDamage(GunDamage, GunDamageEvent, OwnerController, this);
-		}
-	}
-}
-
-// Called when the game starts or when spawned
-void ASimpleShooterGun::BeginPlay()
-{
-	Super::BeginPlay();
-
-}
-
-// Called every frame
-void ASimpleShooterGun::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
+	
+	return GetWorld()->LineTraceSingleByChannel(OutHit, OVPLocation, EndLocation, ECollisionChannel::ECC_GameTraceChannel1, Params);
 }
 
