@@ -37,15 +37,21 @@ private:
 	UPROPERTY(VisibleAnywhere)
 	USkeletalMeshComponent* GunMesh;
 
-	UPROPERTY(EditAnywhere, Category = "Effects")
+	UPROPERTY(EditAnywhere, Category = "GunFX")
 	UParticleSystem* MuzzleParticles;
 
-	UPROPERTY(EditAnywhere, Category = "Effects")
+	UPROPERTY(EditAnywhere, Category = "GunFX")
+	USoundBase* MuzzleSound;
+
+	UPROPERTY(EditAnywhere, Category = "GunFX")
 	UParticleSystem* HitParticles;
 
-	UPROPERTY(EditAnywhere, Category = "Combat")
+	UPROPERTY(EditAnywhere, Category = "GunFX")
+	USoundBase* HitSound;
+
+	UPROPERTY(EditAnywhere, Category = "GunStats")
 	float GunRange = 1500.f;
 
-	UPROPERTY(EditAnywhere, Category = "Combat")
+	UPROPERTY(EditAnywhere, Category = "GunStats")
 	float GunDamage = 10.f;
 };

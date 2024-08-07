@@ -23,7 +23,8 @@ void ASimpleShooterGun::PullTrigger()
 {
 	// Spawns muzzle flash particles at socket on GunMesh
 	UGameplayStatics::SpawnEmitterAttached(MuzzleParticles, GunMesh, TEXT("MuzzleFlashSocket"));
-
+	UGameplayStatics::SpawnSoundAttached(MuzzleSound, GunMesh, TEXT("MuzzleFlashSocket"));
+	
 	FHitResult Hit;
 	bool bSuccessHit = GunTrace(Hit);
 
@@ -31,6 +32,7 @@ void ASimpleShooterGun::PullTrigger()
 	if (bSuccessHit)
 	{
 		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HitParticles, Hit.ImpactPoint, Hit.ImpactNormal.Rotation());
+		UGameplayStatics::SpawnSoundAtLocation(GetWorld(), HitSound, Hit.ImpactPoint);
 		if (AActor* DamagedActor = Hit.GetActor())
 		{
 			FPointDamageEvent GunDamageEvent(GunDamage, Hit, Hit.ImpactNormal, nullptr);

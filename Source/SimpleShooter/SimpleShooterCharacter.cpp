@@ -101,6 +101,11 @@ bool ASimpleShooterCharacter::IsDead() const
 	return CurrHealth <= 0;
 }
 
+float ASimpleShooterCharacter::GetHealthPercent() const
+{
+	return CurrHealth/MaxHealth;
+}
+
 void ASimpleShooterCharacter::Move(const struct FInputActionValue& InVal)
 {
 	APlayerController* PC = GetLocalViewingPlayerController();
