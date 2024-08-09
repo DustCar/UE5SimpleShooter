@@ -4,8 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "Engine/DataAsset.h"
-#include "InputAction.h"
 #include "SimpleShooterInputConfigData.generated.h"
+
+class UInputAction;
 
 /**
  * 
