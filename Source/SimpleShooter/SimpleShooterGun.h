@@ -15,21 +15,15 @@ public:
 	// Sets default values for this actor's properties
 	ASimpleShooterGun();
 
-	void PullTrigger();
+	virtual void PullTrigger();
 	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
-private:
-	
 	AController* GetOwnerController() const; 
 	
-	bool GunTrace(FHitResult& OutHit) const;
+	virtual bool GunTrace(FHitResult& OutHit) const;
 	
 	UPROPERTY(VisibleAnywhere)
 	USceneComponent* RootComp;
@@ -54,4 +48,11 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "GunStats")
 	float GunDamage = 10.f;
+
+public:	
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
+
+private:
+	
 };

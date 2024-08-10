@@ -32,7 +32,7 @@ void ASimpleShooterCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	MainGun = GetWorld()->SpawnActor<ASimpleShooterGun>(GunClass);
-	GetMesh()->HideBoneByName(TEXT("weapon_r"), EPhysBodyOp::PBO_None);
+	GetMesh()->HideBoneByName(TEXT("weapon_r"), EPhysBodyOp::PBO_Term);
 	MainGun->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("WeaponSocket"));
 	MainGun->SetOwner(this);
 
@@ -80,6 +80,7 @@ float ASimpleShooterCharacter::TakeDamage(float DamageAmount, struct FDamageEven
 		// Take the min of DamageTaken and CurrHealth in case actor takes more damage than health
 		DamageTaken = FMath::Min(DamageTaken, CurrHealth);
 		CurrHealth -= DamageTaken;
+		UE_LOG(LogTemp, Warning, TEXT("Actor: %s Damage: %f"), *GetName(), DamageTaken)
 	}
 
 	if (IsDead() && GetCapsuleComponent()->IsCollisionEnabled())

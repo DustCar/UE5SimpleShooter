@@ -1,11 +1,11 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "ShooterPlayerController.h"
+#include "SimpleShooterPlayerController.h"
 #include "TimerManager.h"
 #include "Blueprint/UserWidget.h"
 
-void AShooterPlayerController::BeginPlay()
+void ASimpleShooterPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 
@@ -17,7 +17,7 @@ void AShooterPlayerController::BeginPlay()
 	}
 }
 
-void AShooterPlayerController::GameHasEnded(class AActor* EndGameFocus, bool bIsWinner)
+void ASimpleShooterPlayerController::GameHasEnded(class AActor* EndGameFocus, bool bIsWinner)
 {
 	Super::GameHasEnded(EndGameFocus, bIsWinner);
 
