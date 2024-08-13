@@ -20,14 +20,62 @@ ASimpleShooterGun::ASimpleShooterGun()
 
 void ASimpleShooterGun::PullTrigger()
 {
+	if (bGunEmpty)
+	{
+		UGameplayStatics::SpawnSoundAttached(EmptyGunSound, GunMesh, TEXT("MuzzleFlashSocket"));
+		return;
+	}
+	
 	// Spawns muzzle flash particles at socket on GunMesh
 	UGameplayStatics::SpawnEmitterAttached(MuzzleParticles, GunMesh, TEXT("MuzzleFlashSocket"));
 	UGameplayStatics::SpawnSoundAttached(MuzzleSound, GunMesh, TEXT("MuzzleFlashSocket"));
+	CurrentAmmoInMag--;
+
+	if (CurrentReserveAmmo == 0 && CurrentAmmoInMag == 0)
+	{
+		bGunEmpty = true;
+	}
+}
+
+void ASimpleShooterGun::RefreshMags()
+{
+	if (bGunEmpty)
+	{
+		return;
+	}
+
+	// Use rest  of reserve ammo as ammo count rather than max
+	if (CurrentReserveAmmo < MaxAmmoPerMag)
+	{
+		CurrentAmmoInMag = CurrentReserveAmmo;
+		CurrentReserveAmmo = 0;
+	}
+	// Refills mag based on how much is still in the mag
+	else
+	{
+		CurrentReserveAmmo = CurrentReserveAmmo - (MaxAmmoPerMag - CurrentAmmoInMag);
+		CurrentAmmoInMag = MaxAmmoPerMag;
+	}
+}
+
+uint32 ASimpleShooterGun::GetCurrentAmmoCount() const
+{
+	return CurrentAmmoInMag;
+}
+
+uint32 ASimpleShooterGun::GetCurrentReserveAmmoCount() const
+{
+	return CurrentReserveAmmo;
 }
 
 void ASimpleShooterGun::BeginPlay()
 {
 	Super::BeginPlay();
+
+	MaxReserveAmmo = MaxAmmoPerMag * MagCount;
+	
+	CurrentReserveAmmo = MaxReserveAmmo;
+	CurrentAmmoInMag = MaxAmmoPerMag;
 }
 
 AController* ASimpleShooterGun::GetOwnerController() const

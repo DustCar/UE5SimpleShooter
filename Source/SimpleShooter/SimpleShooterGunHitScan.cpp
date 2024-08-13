@@ -9,12 +9,16 @@
 void ASimpleShooterGunHitScan::PullTrigger()
 {
 	Super::PullTrigger();
+
+	if (bGunEmpty)
+	{
+		return;
+	}
 	
 	FHitResult Hit;
-	bool bSuccessHit = GunTrace(Hit);
 
 	// If hit found, spawn particles at location and deal damage to actor, if the hit is an actor
-	if (bSuccessHit)
+	if (GunTrace(Hit))
 	{
 		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HitParticles, Hit.ImpactPoint, Hit.ImpactNormal.Rotation());
 		UGameplayStatics::SpawnSoundAtLocation(GetWorld(), HitSound, Hit.ImpactPoint);
@@ -31,7 +35,7 @@ void ASimpleShooterGunHitScan::PullTrigger()
 void ASimpleShooterGunHitScan::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 }
 
 // Called every frame

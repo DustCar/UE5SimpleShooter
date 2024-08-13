@@ -30,9 +30,9 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 	
-	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
+	virtual float TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 
 	UFUNCTION(BlueprintPure)
 	bool IsDead() const;
@@ -42,21 +42,27 @@ public:
 
 	void Fire();
 
+	void Reload();
+
+	UFUNCTION(BlueprintPure)
+	void GetWeaponsAmmoCount(int32& AmmoCount, int32& ReserveAmmoCount) const;
+
 private:
 	UPROPERTY(VisibleAnywhere)
 	class USpringArmComponent* SpringArm;
 
 	UPROPERTY(VisibleAnywhere)
 	class UCameraComponent* PlayerCamera;
-
-	UPROPERTY()
-	class ASimpleShooterGun* MainGun;
 	
 	void Move(const struct FInputActionValue& InVal);
 
 	void Look(const FInputActionValue& InVal);
 
 	void ControllerLook(const FInputActionValue& InVal);
+
+	void SwitchWeapons();
+
+	void SwitchWeaponNumbered(int32 WeaponIndex);
 
 	UPROPERTY(EditDefaultsOnly, Category= "Health")
 	float MaxHealth = 100.f;
@@ -65,17 +71,40 @@ private:
 	float CurrHealth;
 
 	// sensitivity for mouse
-	UPROPERTY(EditAnywhere, Category = "Enanced Input", meta=(UImin = 1, UIMax = 100))
+	UPROPERTY(EditAnywhere, Category = "Enhanced Input", meta=(UImin = 1, UIMax = 100))
 	float LookSensitivity = 1;
 
 	// sensitivity for controller
-	UPROPERTY(EditAnywhere, Category = "Enanced Input", meta=(UImin = 1, UIMax = 100))
+	UPROPERTY(EditAnywhere, Category = "Enhanced Input", meta=(UImin = 1, UIMax = 100))
 	float ControllerSensitivity = 1;
 
-	UPROPERTY(EditAnywhere, Category = "Enanced Input")
+	UPROPERTY(EditAnywhere, Category = "Enhanced Input")
 	float ControllerSenMlt = 1;
 
+	// Timers for Switching Weapons
+	UPROPERTY(EditAnywhere, Category = "Enhanced Input")
+	float TimeUntilSwap = 0.f;
+
+	bool bJustSwapped = false;
+
+	// start: Code for a single gun
+	UPROPERTY()
+	class ASimpleShooterGun* MainGun;
+
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
-	TSubclassOf<class ASimpleShooterGun> GunClass;
+	TSubclassOf<ASimpleShooterGun> RifleClass;
+	// end
+
+	// start: Code for an array of guns; For weapon swap functionality
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	TArray<TSubclassOf<ASimpleShooterGun>> GunClasses;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	TSubclassOf<ASimpleShooterGun> LauncherClass;
+
+	TStaticArray<ASimpleShooterGun*, 2> Guns;
+
+	UPROPERTY(EditAnywhere, Category = "Weapon")
+	int32 GunsIndex = 0;
 	
 };

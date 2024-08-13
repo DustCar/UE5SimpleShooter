@@ -3,6 +3,7 @@
 
 #include "SimpleShooterProjectile.h"
 
+#include "SimpleShooterGunProjectile.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -65,6 +66,15 @@ void ASimpleShooterProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* Other
 			this);
 	}
 
+	ASimpleShooterGunProjectile* MyOwnerAsGun = Cast<ASimpleShooterGunProjectile>(MyOwner);
+	if (MyOwnerAsGun == nullptr)
+	{
+		return;
+	}
+
+	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), MyOwnerAsGun->GetHitParticles(), GetActorLocation());
+	UGameplayStatics::SpawnSoundAtLocation(GetWorld(), MyOwnerAsGun->GetHitSound(), GetActorLocation());
+	
 	Destroy();
 }
 

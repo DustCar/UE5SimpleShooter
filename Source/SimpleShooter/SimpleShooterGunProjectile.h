@@ -18,6 +18,10 @@ public:
 	ASimpleShooterGunProjectile();
 
 	virtual void PullTrigger() override;
+
+	UParticleSystem* GetHitParticles() const;
+
+	USoundBase* GetHitSound() const;
 	
 protected:
 	virtual void BeginPlay() override;

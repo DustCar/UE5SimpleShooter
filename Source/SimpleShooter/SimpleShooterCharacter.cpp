@@ -31,19 +31,32 @@ void ASimpleShooterCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	MainGun = GetWorld()->SpawnActor<ASimpleShooterGun>(GunClass);
+	CurrHealth = MaxHealth;
+	
+	/* code for a single gun
+	MainGun = GetWorld()->SpawnActor<ASimpleShooterGun>(RifleClass);
 	GetMesh()->HideBoneByName(TEXT("weapon_r"), EPhysBodyOp::PBO_Term);
 	MainGun->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("WeaponSocket"));
 	MainGun->SetOwner(this);
+	*/
 
-	CurrHealth = MaxHealth;
+	Guns[0] = GetWorld()->SpawnActor<ASimpleShooterGun>(RifleClass);
+	Guns[1] = GetWorld()->SpawnActor<ASimpleShooterGun>(LauncherClass);
+	GetMesh()->HideBoneByName(TEXT("weapon_r"), EPhysBodyOp::PBO_Term);
+	Guns[GunsIndex]->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("WeaponSocket"));
+	Guns[GunsIndex]->SetOwner(this);
 }
 
 // Called every frame
 void ASimpleShooterCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	
+
+	TimeUntilSwap--;
+	if (TimeUntilSwap <= 0.f)
+	{
+		bJustSwapped = false;
+	}
 }
 
 // Called to bind functionality to input
@@ -70,6 +83,10 @@ void ASimpleShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerI
 	PEI->BindAction(InputActions->InputControllerLook, ETriggerEvent::Triggered, this, &ASimpleShooterCharacter::ControllerLook);
 	PEI->BindAction(InputActions->InputJump, ETriggerEvent::Triggered, this, &ACharacter::Jump);
 	PEI->BindAction(InputActions->InputFire, ETriggerEvent::Triggered, this, &ASimpleShooterCharacter::Fire);
+	PEI->BindAction(InputActions->InputSwitchWeapons, ETriggerEvent::Triggered, this, &ASimpleShooterCharacter::SwitchWeapons);
+	PEI->BindAction(InputActions->InputSwitchWeaponOne, ETriggerEvent::Triggered, this, &ASimpleShooterCharacter::SwitchWeaponNumbered, 0);
+	PEI->BindAction(InputActions->InputSwitchWeaponTwo, ETriggerEvent::Triggered, this, &ASimpleShooterCharacter::SwitchWeaponNumbered, 1);
+	PEI->BindAction(InputActions->ReloadWeapon, ETriggerEvent::Triggered, this, &ASimpleShooterCharacter::Reload);
 }
 
 float ASimpleShooterCharacter::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser)
@@ -171,8 +188,56 @@ void ASimpleShooterCharacter::ControllerLook(const FInputActionValue& InVal)
 	}
 }
 
+void ASimpleShooterCharacter::SwitchWeapons()
+{
+	if (bJustSwapped == true || TimeUntilSwap >= 0.f)
+	{
+		return;
+	}
+
+	bJustSwapped = true;
+	TimeUntilSwap = 15.f;
+		
+	Guns[GunsIndex]->DetachFromActor(FDetachmentTransformRules::KeepRelativeTransform);
+	GunsIndex = (GunsIndex + 1) % 2;
+	Guns[GunsIndex]->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("WeaponSocket"));
+	Guns[GunsIndex]->SetOwner(this);
+}
+
+void ASimpleShooterCharacter::SwitchWeaponNumbered(int32 WeaponIndex)
+{
+	if (bJustSwapped == true || TimeUntilSwap >= 0.f || WeaponIndex == GunsIndex)
+	{
+		return;
+	}
+
+	bJustSwapped = true;
+	TimeUntilSwap = 15.f;
+
+	Guns[GunsIndex]->DetachFromActor(FDetachmentTransformRules::KeepRelativeTransform);
+	GunsIndex = WeaponIndex;
+	Guns[GunsIndex]->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("WeaponSocket"));
+	Guns[GunsIndex]->SetOwner(this);
+}
+
+void ASimpleShooterCharacter::GetWeaponsAmmoCount(int32& AmmoCount, int32& ReserveAmmoCount) const
+{
+	AmmoCount = Guns[GunsIndex]->GetCurrentAmmoCount();
+	ReserveAmmoCount = Guns[GunsIndex]->GetCurrentReserveAmmoCount();
+}
+
 void ASimpleShooterCharacter::Fire()
 {
-	MainGun->PullTrigger();
+	if (Guns[GunsIndex]->GetCurrentAmmoCount() == 0 && Guns[GunsIndex]->GetCurrentReserveAmmoCount() != 0)
+	{
+		Reload();
+		return;
+	}
+	Guns[GunsIndex]->PullTrigger();
+}
+
+void ASimpleShooterCharacter::Reload()
+{
+	Guns[GunsIndex]->RefreshMags();
 }
 

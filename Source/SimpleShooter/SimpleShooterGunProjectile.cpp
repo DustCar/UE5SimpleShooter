@@ -15,9 +15,13 @@ void ASimpleShooterGunProjectile::PullTrigger()
 {
 	Super::PullTrigger();
 
+	if (bGunEmpty)
+	{
+		return;
+	}
+
 	FHitResult Hit;
-	bool bHit = GunTrace(Hit);
-	if (bHit)
+	if (GunTrace(Hit))
 	{
 		FVector Location = ProjectileSpawnPoint->GetComponentLocation();
 		// Calculate the line of the trace to get its rotation
@@ -34,8 +38,19 @@ void ASimpleShooterGunProjectile::PullTrigger()
 	
 }
 
+UParticleSystem* ASimpleShooterGunProjectile::GetHitParticles() const
+{
+	return HitParticles;
+}
+
+USoundBase* ASimpleShooterGunProjectile::GetHitSound() const
+{
+	return HitSound;
+}
+
 void ASimpleShooterGunProjectile::BeginPlay()
 {
 	Super::BeginPlay();
+
 }
 

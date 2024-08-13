@@ -16,6 +16,12 @@ public:
 	ASimpleShooterGun();
 
 	virtual void PullTrigger();
+
+	void RefreshMags();
+
+	uint32 GetCurrentAmmoCount() const;
+
+	uint32 GetCurrentReserveAmmoCount() const;
 	
 protected:
 	// Called when the game starts or when spawned
@@ -43,16 +49,36 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "GunFX")
 	USoundBase* HitSound;
 
+	UPROPERTY(EditAnywhere, Category = "GunFX")
+	USoundBase* EmptyGunSound;
+
 	UPROPERTY(EditAnywhere, Category = "GunStats")
 	float GunRange = 1500.f;
 
 	UPROPERTY(EditAnywhere, Category = "GunStats")
 	float GunDamage = 10.f;
 
+	UPROPERTY(EditAnywhere, Category = "GunStats")
+	uint32 MaxReserveAmmo = 0;
+
+	UPROPERTY(EditAnywhere, Category = "GunStats")
+	uint32 CurrentReserveAmmo = 0;
+
+	UPROPERTY(EditAnywhere, Category = "GunStats")
+	uint32 MaxAmmoPerMag = 0;
+
+	UPROPERTY(EditAnywhere, Category = "GunStats")
+	uint32 CurrentAmmoInMag = 0;
+
+	UPROPERTY(EditAnywhere, Category = "GunStats")
+	uint32 MagCount = 0;
+
+	UPROPERTY()
+	bool bGunEmpty = false;
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-private:
 	
 };
