@@ -204,6 +204,11 @@ void ASimpleShooterCharacter::SwitchWeapons()
 	Guns[GunsIndex]->SetOwner(this);
 }
 
+ASimpleShooterGun* ASimpleShooterCharacter::GetEquippedGun() const
+{
+	return Guns[GunsIndex];
+}
+
 void ASimpleShooterCharacter::SwitchWeaponNumbered(int32 WeaponIndex)
 {
 	if (bJustSwapped == true || TimeUntilSwap >= 0.f || WeaponIndex == GunsIndex)

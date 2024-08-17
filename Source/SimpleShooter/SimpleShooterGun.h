@@ -19,9 +19,13 @@ public:
 
 	void RefreshMags();
 
-	uint32 GetCurrentAmmoCount() const;
+	int32 GetCurrentAmmoCount() const;
 
-	uint32 GetCurrentReserveAmmoCount() const;
+	int32 GetCurrentReserveAmmoCount() const;
+
+	void ReplenishAmmo(int32 AddedAmmo);
+
+	void SetGunEmpty(bool Value);
 	
 protected:
 	// Called when the game starts or when spawned
@@ -59,19 +63,19 @@ protected:
 	float GunDamage = 10.f;
 
 	UPROPERTY(EditAnywhere, Category = "GunStats")
-	uint32 MaxReserveAmmo = 0;
+	int32 MaxReserveAmmo = 0;
 
 	UPROPERTY(EditAnywhere, Category = "GunStats")
-	uint32 CurrentReserveAmmo = 0;
+	int32 CurrentReserveAmmo = 0;
 
 	UPROPERTY(EditAnywhere, Category = "GunStats")
-	uint32 MaxAmmoPerMag = 0;
+	int32 MaxAmmoPerMag = 0;
 
 	UPROPERTY(EditAnywhere, Category = "GunStats")
-	uint32 CurrentAmmoInMag = 0;
+	int32 CurrentAmmoInMag = 0;
 
 	UPROPERTY(EditAnywhere, Category = "GunStats")
-	uint32 MagCount = 0;
+	int32 MagCount = 0;
 
 	UPROPERTY()
 	bool bGunEmpty = false;

@@ -43,6 +43,10 @@ public:
 	void Fire();
 
 	void Reload();
+	
+	void SwitchWeapons();
+
+	class ASimpleShooterGun* GetEquippedGun() const;
 
 	UFUNCTION(BlueprintPure)
 	void GetWeaponsAmmoCount(int32& AmmoCount, int32& ReserveAmmoCount) const;
@@ -59,8 +63,6 @@ private:
 	void Look(const FInputActionValue& InVal);
 
 	void ControllerLook(const FInputActionValue& InVal);
-
-	void SwitchWeapons();
 
 	void SwitchWeaponNumbered(int32 WeaponIndex);
 

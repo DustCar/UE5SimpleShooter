@@ -39,33 +39,43 @@ void ASimpleShooterGun::PullTrigger()
 
 void ASimpleShooterGun::RefreshMags()
 {
-	if (bGunEmpty)
+	if (bGunEmpty || CurrentAmmoInMag == MaxAmmoPerMag || CurrentReserveAmmo == 0)
 	{
 		return;
 	}
 
-	// Use rest  of reserve ammo as ammo count rather than max
-	if (CurrentReserveAmmo < MaxAmmoPerMag)
-	{
-		CurrentAmmoInMag = CurrentReserveAmmo;
-		CurrentReserveAmmo = 0;
-	}
-	// Refills mag based on how much is still in the mag
-	else
-	{
-		CurrentReserveAmmo = CurrentReserveAmmo - (MaxAmmoPerMag - CurrentAmmoInMag);
-		CurrentAmmoInMag = MaxAmmoPerMag;
-	}
+	int32 NewReserve = CurrentReserveAmmo - (MaxAmmoPerMag - CurrentAmmoInMag);
+	int32 NewAmmoInMag = CurrentReserveAmmo + CurrentAmmoInMag;
+	
+	CurrentAmmoInMag = NewAmmoInMag > MaxAmmoPerMag ? MaxAmmoPerMag : NewAmmoInMag;
+	CurrentReserveAmmo = NewReserve > 0 ? NewReserve : 0;
 }
 
-uint32 ASimpleShooterGun::GetCurrentAmmoCount() const
+int32 ASimpleShooterGun::GetCurrentAmmoCount() const
 {
 	return CurrentAmmoInMag;
 }
 
-uint32 ASimpleShooterGun::GetCurrentReserveAmmoCount() const
+int32 ASimpleShooterGun::GetCurrentReserveAmmoCount() const
 {
 	return CurrentReserveAmmo;
+}
+
+void ASimpleShooterGun::ReplenishAmmo(int32 AddedAmmo)
+{
+	if (AddedAmmo >= MaxReserveAmmo)
+	{
+		CurrentReserveAmmo = MaxReserveAmmo;
+	}
+	else
+	{
+		CurrentReserveAmmo += AddedAmmo;
+	}
+}
+
+void ASimpleShooterGun::SetGunEmpty(bool Value)
+{
+	bGunEmpty = Value;
 }
 
 void ASimpleShooterGun::BeginPlay()
