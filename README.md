@@ -80,11 +80,36 @@ For a course that is meant for beginners, it packs a lot of good introductory in
 Here will be a set of videos showcasing certain aspects of the project and a brief description of how I went about it.
 
 ### Character
+https://github.com/user-attachments/assets/fe9ee841-06ab-4245-8e9e-a0fc432d9c78
+
 
 ### Weapons
+https://github.com/user-attachments/assets/fc377fc7-1d1e-4415-a4df-3f0a65d84ff3
+
+
+#### Weapon Switching
+https://github.com/user-attachments/assets/29b918ed-c30c-44d8-9556-fc0dccb2d01f
+
+
+### Ammo Pickup
+https://github.com/user-attachments/assets/9302398b-fc41-468f-854f-44d9c41aecf4
+
 
 ### AI
+https://github.com/user-attachments/assets/dfdbda71-9d90-4acc-875a-541128791c47
+
 
 ### HUD
+#### Game Over
+https://github.com/user-attachments/assets/ebf5383e-5e9f-4140-bd79-bc71f6fbd585
+
+
+#### Win
+https://github.com/user-attachments/assets/673750c8-2468-433c-a3c3-9e109a5484fb
+
+
+### Demo
+https://github.com/user-attachments/assets/f1d39e44-a5af-4492-aca8-ae20407d4a7f
+
 
 
