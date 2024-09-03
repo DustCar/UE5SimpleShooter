@@ -7,7 +7,7 @@ I completed the main course on August 6th with this project being the final sect
 
 In this course, I had to create multiple projects with increasing complexity after each project completion. Each project had its own topics it focused on (which I list out under [Course Takeaways](#Project-Takeaways)) and somewhat built upon the previous. This project was the last project of the course and is a simple third-person shooter game that includes AI enemies, simple movement with jumping, simple movement and aiming animations, simple gun FX, a HUD, controller support, and a simple elimination gamemode.
 
-After I completed the course, I added a few slight additions as part of a challenge set by the instructor and as part of what I wanted to add to the last project in the course, which is this project. Those additions including:
+**After I completed the course, I added a few slight additions as part of a challenge set by the instructor and as part of what I wanted to add to the last project in the course, which is this project. Those additions including:**
 - Setting up a gun class for ease of creating different weapons
 - Adding a projectile-based weapon
 - Creating a pickup class
@@ -16,7 +16,7 @@ After I completed the course, I added a few slight additions as part of a challe
 
 *_Last Updated: Aug. 10, 2024_
 
-If you want to skip to the showcase, [click here](#Project-Showcase), if not then I will be explaining a bit more about what I learned in this project and about why some things are how are they are in the project.
+**If you want to skip to the showcase, [click here](#Project-Showcase), if not then I will be explaining a bit more about what I learned in this project and about why some things are how are they are in the project.**
 
 I ultimately decided to move on to another course that focuses on Multiplayer and developing with networking in mind since I believe that networking is important to learn. So this project will be more simple that what I am currently working on. After all, this project was part of a beginners course into Unreal Engine.
 
