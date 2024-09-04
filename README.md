@@ -81,7 +81,31 @@ Here will be a set of videos showcasing certain aspects of the project and a bri
 
 ### Character
 https://github.com/user-attachments/assets/fe9ee841-06ab-4245-8e9e-a0fc432d9c78
+For character movement I used the Enhance Input Subsystem and formatted it in a way to keep the Character header file cleaner by avoiding to declare Input Actions in it. I did this by saving Input Actions into a Custom Data Asset file and referencing it when binding actions in Character.cpp
 
+Custom Data Asset:
+
+Member declaraction in header file to reference in Character.cpp (no need for a .ccp file for the DA)
+
+![SSCDAH](https://github.com/user-attachments/assets/5ac71dcc-fa1f-4277-b001-bd54078d0ec1)
+
+Blueprint version where I assign the Input Actions to their respective member variables
+
+![SSCDA](https://github.com/user-attachments/assets/e42c83bb-99b2-4cc5-9888-949e75e7955b)
+
+I then reference the Data Asset along with my own IMC with all the mapping for the IAs
+
+![SSCH](https://github.com/user-attachments/assets/110da3c4-c0a7-4420-a98a-ad6e021fe345)
+
+Then in the Character.cpp file, I would manually set up the Enhanced Input Component by obtaining the Player Controller using `GetController()` with casting, obtaining the Enhanced Input Local Player Subsystem using the Player Controller, clearing all IMCs and adding our own, then binding the IAs to our call back functions, referencing the Data Asset with our IAs to pass in to the function.
+
+![SSBIA](https://github.com/user-attachments/assets/2a9e183c-da7f-4d29-bd9e-bd2138740aee)
+
+After setup in Character.cpp, I go to the Character BP and assign the Data Asset and IMC to the character so that it can properly setup the EIS.
+
+![SSCBPEI](https://github.com/user-attachments/assets/f6cc89b2-dce1-408c-9684-aeb50d65fce7)
+
+Now if I want to add any future Input Actions, I would just declare the member in the Data Asset, rather than character.h, and then bind the action in the character.cpp file after creating the Input Action and assigning a mapping to it in the IMC.
 
 ### Weapons
 https://github.com/user-attachments/assets/fc377fc7-1d1e-4415-a4df-3f0a65d84ff3
