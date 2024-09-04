@@ -127,6 +127,18 @@ I then created Blueprints from the C++ class and this is where I named the gun t
 
 To deal damage to a character, I overrode the `TakeDamage()` function in the character class so that it affects the character's Health component. For Hitscan, it used the results from the trace to directly call `TakeDamage()` for the _DamagedActor_. For the Projectile weapon, it used a projectile actor that used the function `ApplyRadialDamageWithFalloff()` in a hit event callback function I called `OnHit()` which is binded to `OnComponentHit`.
 
+#### Weapon Reloading
+For reloading, the Gun class actually holds variables and functions handling a guns ammo including variables for _AmmoInMag_ (current and max) and _ReserveAmmo_ (current and max) and functions for refreshing mags. To reload a weapon from the character, I created a callback function which would call the `RefreshMag()` function of the currently equipped gun, and binded that to a Reload IA.
+
+The way I implemented refresh mags is by creating two local int32 variables which would hold calculated new amounts for ammo in mag and reserve ammo, _NewAmmoInMag_ and _NewReserve_ respectively. Then I would use ternary functions for the _CurrentAmmoInMag_ and _CurrentReserveAmmo_ to set them as either max amount or the calculated amount. 
+
+For _NewReserve_, I calculated it by subtracting the _CurrentReserveAmmo_ with the _MaxAmmoPerMag_ minus the _CurrentAmmoInMag_. The latter subtraction is to take into account any ammo that is still in the mag. Then for _CurrentReserveAmmo_, I checked if _NewReserve_ is greater than 0 and if so then set _CurrentReserveAmmo_ = _NewReserve_, else _CurrentReserveAmmo_ = 0.
+
+For _NewAmmoInMag_, I just took the _CurrentReserveAmmo_ and added it to _CurrentAmmoInMag_. Then for _CurrentAmmoInMag_, I checked if _NewAmmoInMag_ is greater than _MaxAmmoPerMag_ and if so then set _CurrentAmmoInMag_ = _MaxAmmoPerMag_, else _CurrentAmmoInMag_ = _NewAmmoInMag_. This way when reloading with little ammo, then the values will never go below 0 nor would it become infinite (which were two bugs I discovered with my early iterations).
+
+RefreshMag():
+
+![SSGRM](https://github.com/user-attachments/assets/f2319623-6de1-4bb9-8705-2d8bb9c0ddb3)
 
 
 #### Weapon Switching
