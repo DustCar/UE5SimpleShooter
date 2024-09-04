@@ -81,6 +81,7 @@ Here will be a set of videos showcasing certain aspects of the project and a bri
 
 ### Character
 https://github.com/user-attachments/assets/fe9ee841-06ab-4245-8e9e-a0fc432d9c78
+
 For character movement I used the Enhance Input Subsystem and formatted it in a way to keep the Character header file cleaner by avoiding to declare Input Actions in it. I did this by saving Input Actions into a Custom Data Asset file and referencing it when binding actions in Character.cpp
 
 Custom Data Asset:
@@ -109,6 +110,23 @@ Now if I want to add any future Input Actions, I would just declare the member i
 
 ### Weapons
 https://github.com/user-attachments/assets/fc377fc7-1d1e-4415-a4df-3f0a65d84ff3
+
+For weapons, I created a base Actor class named Gun, which held variables that were common between any gun like a Skeletal Mesh, SFX (Sound, Particles), Ammo, Firing function, and some extra functions and variables. For some functions, like the firing function, they were made to be virtual methods to be able to override the function based on what kind of gun it is.
+
+I then created two child classes of the Gun class, _HitScan_ and _Projectile_. Keeping it broad so that it can be used to create multiple weapons based on type rather than creating a class for each weapon. For both classes I overrode the firing function, `PullTrigger()`, so that _HitScan_ would use a trace as the main way to deal damage, while _Projectile_ also uses a trace but spawns a projectile instead for the damage, only using the trace for projectile rotation.
+
+HitScan PullTrigger():
+
+![SSHGPT](https://github.com/user-attachments/assets/304a791c-c42f-4cb2-a0b3-a2b1edb3291b)
+
+Projectile PullTrigger():
+
+![SSPGPT](https://github.com/user-attachments/assets/8a44b94d-43c9-4aa2-8ade-80e0513e081b)
+
+I then created Blueprints from the C++ class and this is where I named the gun to be an actual gun (i.e. _Rifle_ and _Launcher_) and then set all variables needed to give the gun life, like the Skeletal Mesh and SFX. 
+
+To deal damage to a character, I overrode the `TakeDamage()` function in the character class so that it affects the character's Health component. For Hitscan, it used the results from the trace to directly call `TakeDamage()` for the _DamagedActor_. For the Projectile weapon, it used a projectile actor that used the function `ApplyRadialDamageWithFalloff()` in a hit event callback function I called `OnHit()` which is binded to `OnComponentHit`.
+
 
 
 #### Weapon Switching
