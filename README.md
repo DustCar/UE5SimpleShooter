@@ -168,13 +168,38 @@ Both functions return early if the character has just swapped, and the numbered 
 ### Ammo Pickup
 https://github.com/user-attachments/assets/9302398b-fc41-468f-854f-44d9c41aecf4
 
+For ammo pickup, I first created a general Actor class named _Pickup_, which just has two components, a mesh and a sphere component for overlap. It also has one virtual method `OnOverlap()` which is the callback function for `OnComponentBeginOverlap` event. Then I created a child class of _Pickup_ for ammo called _Pickup\_Ammo_ and just overrode the `OnOverlap()` function to refill the ammo of the character who picked it up, then hid the pickup.
+
+![SSPA](https://github.com/user-attachments/assets/6e9c1d18-20f0-4933-8dc4-ba496c2476ea)
+
+And in the gun class I made this function:
+
+![SSGRMA](https://github.com/user-attachments/assets/21412996-7005-4b44-aff1-d4f118678000)
+
+For the ammount of ammo to be replenished, the _Pickup\_Ammo_ class has an int32 private variable _AmmoReplenishAmt_ that is editable in BP.
 
 ### AI
 https://github.com/user-attachments/assets/dfdbda71-9d90-4acc-875a-541128791c47
 
+For the AI, I created a new AI Controller class based on the AIController class. This class holds a `UBehaviorTree*` variable which is editable in BPs and executed in `BeginPlay()`. `BeginPlay()` also sets some Blackboard components.
+
+Then I created a new Behavior Tree and Blackboard in the editor.
+
+#### Behavior Tree
+For behavior, it was a simple go to player if seen, shoot, then go back to start location if player is no longer seen behavior.
+
+![SSAIBT](https://github.com/user-attachments/assets/12f42695-e512-40ba-802d-b31153e7d49f)
+
+The Behavior Tree used a few Blackboard values like the the actor's starting location and Player's last known location to accomplish the behavior.
+
+There are also a few custom Behavior Tree Tasks and Behavior Tree Services that we created that helped make the behavior work and the tree more readable.
+
+**Custom Behavior Tree Tasks:**
+- BTTask_ClearBlackBoardValue: 
+- BTTask_Shoot: 
 
 ### HUD
-For my HUDs, I used Widget Blueprints to design the HUDs then in the my PlayerController C++ class I declare the widget classes to reference them to add to viewport using `AddToViewport()`.
+For the HUDs, I used Widget Blueprints to design the HUDs then in the my PlayerController C++ class I declare the widget classes to reference them to add to viewport using `AddToViewport()`.
 
 I have three Widget Blueprints:
 - Main HUD with crosshair, health, and ammo
@@ -184,6 +209,8 @@ I have three Widget Blueprints:
 Both game over and win screens are just text blocks, while the main hud uses get functions for health and ammo so that it can be updated on the screen.
 
 For the health bar, the functionality is set in the Blueprint and I just used branch nodes, comparing the percentage of the current health to a threshold then changing the color to the condition it goes to (< .7 = yellow, < .4 = red).
+
+![SSHBPC](https://github.com/user-attachments/assets/d1a427d2-5508-461d-a32f-db626c09fc77)
 
 #### Game Over
 https://github.com/user-attachments/assets/ebf5383e-5e9f-4140-bd79-bc71f6fbd585
