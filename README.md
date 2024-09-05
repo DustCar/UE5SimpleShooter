@@ -16,11 +16,11 @@ In this course, I had to create multiple projects with increasing complexity aft
 
 *_Last Updated: Aug. 10, 2024_
 
+I have ultimately decided to move on to another course that focuses on Multiplayer and developing with networking in mind since I believe that networking is important to learn. So this project will be more simple that what I am currently working on. After all, this project was part of a beginners course into Unreal Engine.
+
 **If you want to skip to the showcase, [click here](#Project-Showcase), if not then I will be explaining a bit more about what I learned in this project and about why some things are how are they are in the project.**
 
-I ultimately decided to move on to another course that focuses on Multiplayer and developing with networking in mind since I believe that networking is important to learn. So this project will be more simple that what I am currently working on. After all, this project was part of a beginners course into Unreal Engine.
-
-In addition, since this project only had a portion of the course focused on it, some things were not added that could have made the game look smoother and feel smoother, like character rotating animations and reload animations, and I have not yet gone about adding them (at least as of last date posted above).
+Since this project only had a portion of the course focused on it, some things were not added that could have made the game look smoother and feel smoother, like character rotating animations and reload animations, and I have not yet gone about adding them (at least as of last date posted above).
 
 I used this course as a structured learning experience to get into Unreal Engine as I made the switch to it from Unity after December 2023. It took me some time to complete this project while going on and off (approx. 5 months of active learning) but it did pretty good in exposing me to what Unreal has to offer as well how C++ works with Blueprints. 
 
@@ -202,7 +202,7 @@ That is all from what I have currently done with this project. Thank you for mak
 
 It may not be too impressive but I wanted to at least showcase my start and be proud of the learning process I had with this course and project. I want to look back on this project in the future and see how far I have come.
 
-As I said at the top of the READEME, I am currently working on a different project that is also a shooter but involves networking and multiplayer. It handles some aspects of gameplay a little differently than in Simple Shooter and will most likely be more polished than this one. 
+As I said at the top of the README, I am currently working on a different project that is also a shooter but involves networking and multiplayer. It handles some aspects of gameplay a little differently than in Simple Shooter and will most likely be more polished than this one. 
 
 I plan to dive into networking and multiplayer in hopes that I can gain the skills to work on online games and I decided to work on that project to do so. The name of that project is Arina and if you want to check it out, here is the [link](https://github.com/DustCar/UE5ArinaMultiplayerShooterProject) to it.
 
