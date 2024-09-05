@@ -84,7 +84,7 @@ https://github.com/user-attachments/assets/fe9ee841-06ab-4245-8e9e-a0fc432d9c78
 
 For character movement I used the Enhance Input Subsystem and formatted it in a way to keep the Character header file cleaner by avoiding to declare Input Actions in it. I did this by saving Input Actions into a Custom Data Asset file and referencing it when binding actions in Character.cpp
 
-Custom Data Asset:
+**Custom Data Asset:**
 
 Member declaraction in header file to reference in Character.cpp (no need for a .ccp file for the DA)
 
@@ -115,11 +115,11 @@ For weapons, I created a base Actor class named Gun, which held variables that w
 
 I then created two child classes of the Gun class, _HitScan_ and _Projectile_. Keeping it broad so that it can be used to create multiple weapons based on type rather than creating a class for each weapon. For both classes I overrode the firing function, `PullTrigger()`, so that _HitScan_ would use a trace as the main way to deal damage, while _Projectile_ also uses a trace but spawns a projectile instead for the damage, only using the trace for projectile rotation.
 
-HitScan PullTrigger():
+**HitScan PullTrigger():**
 
 ![SSHGPT](https://github.com/user-attachments/assets/304a791c-c42f-4cb2-a0b3-a2b1edb3291b)
 
-Projectile PullTrigger():
+**Projectile PullTrigger():**
 
 ![SSPGPT](https://github.com/user-attachments/assets/8a44b94d-43c9-4aa2-8ade-80e0513e081b)
 
@@ -132,18 +132,38 @@ For reloading, the Gun class actually holds variables and functions handling a g
 
 The way I implemented refresh mags is by creating two local int32 variables which would hold calculated new amounts for ammo in mag and reserve ammo, _NewAmmoInMag_ and _NewReserve_ respectively. Then I would use ternary functions for the _CurrentAmmoInMag_ and _CurrentReserveAmmo_ to set them as either max amount or the calculated amount. 
 
-For _NewReserve_, I calculated it by subtracting the _CurrentReserveAmmo_ with the _MaxAmmoPerMag_ minus the _CurrentAmmoInMag_. The latter subtraction is to take into account any ammo that is still in the mag. Then for _CurrentReserveAmmo_, I checked if _NewReserve_ is greater than 0 and if so then set _CurrentReserveAmmo_ = _NewReserve_, else _CurrentReserveAmmo_ = 0.
+**Gun Header:**
 
-For _NewAmmoInMag_, I just took the _CurrentReserveAmmo_ and added it to _CurrentAmmoInMag_. Then for _CurrentAmmoInMag_, I checked if _NewAmmoInMag_ is greater than _MaxAmmoPerMag_ and if so then set _CurrentAmmoInMag_ = _MaxAmmoPerMag_, else _CurrentAmmoInMag_ = _NewAmmoInMag_. This way when reloading with little ammo, then the values will never go below 0 nor would it become infinite (which were two bugs I discovered with my early iterations).
+![SSGAH](https://github.com/user-attachments/assets/1b9eac33-664e-41e4-90b3-b6d177f3c75e)
 
-RefreshMag():
+**RefreshMag():**
 
 ![SSGRM](https://github.com/user-attachments/assets/f2319623-6de1-4bb9-8705-2d8bb9c0ddb3)
-
 
 #### Weapon Switching
 https://github.com/user-attachments/assets/29b918ed-c30c-44d8-9556-fc0dccb2d01f
 
+**Multiple Weapon Setup:**
+
+To understand how I did weapon switching, I will briefly explain how I handled multiple weapons and how I added them into the world. 
+
+On my character class, it held a TStaticArray of type _ASimpleShooterGun_, my Gun class, with 2 elements, named _Guns_. The character class also declares _ASimpleShooterGun_ subclasses named _RifleClass_ and _LauncherClass_ to be used with `SpawnActor()`, and an int32 index variable for current weapon, which was defaulted to 0. 
+
+After declaration, I then spawned the two gun actors and placed them into the _Guns_ array in index 0 and 1, Rifle first then Launcher. Then, I attached it to a socket on the character mesh using the `AttachToComponent()` function to add the weapon into the world. Then set the owner of the current weapon to that of the character.
+
+![SSCBP](https://github.com/user-attachments/assets/eb096038-2e66-4577-8163-a619f98a0b8c)
+
+For weapon switching I added two ways of switching, scroll wheel or num keys 1 and 2. 
+
+For scroll wheel, the code for attaching the weapon and setting the owner from BeginPlay() is reused to equip the other weapon after hiding the currently equipped weapon. 
+
+![SSCSW](https://github.com/user-attachments/assets/2890b7e0-ef3a-4a5a-9b3a-5d8a07d8f451)
+
+For num keys, I used the same code but included a parameter that holds the index of the weapon you want to switch to. So instead of updating index by incrementing, it is set to the parameter.
+
+![SSCWSN](https://github.com/user-attachments/assets/63b395a7-6857-4aa6-a032-f7ae11986655)
+
+Both functions return early if the character has just swapped, and the numbered returns early if the player is trying to swap to the current weapon.
 
 ### Ammo Pickup
 https://github.com/user-attachments/assets/9302398b-fc41-468f-854f-44d9c41aecf4
