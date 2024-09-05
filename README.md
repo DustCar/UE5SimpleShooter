@@ -153,7 +153,7 @@ After declaration, I then spawned the two gun actors and placed them into the _G
 
 ![SSCBP](https://github.com/user-attachments/assets/eb096038-2e66-4577-8163-a619f98a0b8c)
 
-For weapon switching I added two ways of switching, scroll wheel or num keys 1 and 2. 
+For weapon switching, I added two ways of switching, scroll wheel or num keys 1 and 2. 
 
 For scroll wheel, the code for attaching the weapon and setting the owner from BeginPlay() is reused to equip the other weapon after hiding the currently equipped weapon. 
 
