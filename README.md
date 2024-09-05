@@ -174,6 +174,17 @@ https://github.com/user-attachments/assets/dfdbda71-9d90-4acc-875a-541128791c47
 
 
 ### HUD
+For my HUDs, I used Widget Blueprints to design the HUDs then in the my PlayerController C++ class I declare the widget classes to reference them to add to viewport using `AddToViewport()`.
+
+I have three Widget Blueprints:
+- Main HUD with crosshair, health, and ammo
+- Game Over screen
+- Win screen
+
+Both game over and win screens are just text blocks, while the main hud uses get functions for health and ammo so that it can be updated on the screen.
+
+For the health bar, the functionality is set in the Blueprint and I just used branch nodes, comparing the percentage of the current health to a threshold then changing the color to the condition it goes to (< .7 = yellow, < .4 = red).
+
 #### Game Over
 https://github.com/user-attachments/assets/ebf5383e-5e9f-4140-bd79-bc71f6fbd585
 
@@ -183,7 +194,20 @@ https://github.com/user-attachments/assets/673750c8-2468-433c-a3c3-9e109a5484fb
 
 
 ### Demo
+Here is a really short demo of just going around the map and eliminating the enemies. As seen from the past videos and in this video, the game does spike during certain movements and this could be attributed to the map that I imported in from the course's asset packs, but I would not be surprised if it had to do with my code or machine.
+
 https://github.com/user-attachments/assets/f1d39e44-a5af-4492-aca8-ae20407d4a7f
+
+That is all from what I have currently done with this project. Thank you for making it this far and taking the time to read this, it can definitely be better and more polished and I may add more features later down the line, but I will keep it as is for now since I have more fun projects that I look forward to. 
+
+It may not be too impressive but I wanted to at least showcase my start and be proud of the learning process I had with this course and project. I want to look back on this project in the future and see how far I have come.
+
+As I said at the top of the READEME, I am currently working on a different project that is also a shooter but involves networking and multiplayer. It handles some aspects of gameplay a little differently than in Simple Shooter and will most likely be more polished than this one. 
+
+I plan to dive into networking and multiplayer in hopes that I can gain the skills to work on online games and I decided to work on that project to do so. The name of that project is Arina and if you want to check it out, here is the [link](https://github.com/DustCar/UE5ArinaMultiplayerShooterProject) to it.
+
+**Again, thank you very much for taking the time to look over this project! Hope you have a nice day!**
+
 
 
 
