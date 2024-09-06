@@ -108,6 +108,23 @@ After setup in Character.cpp, I go to the Character BP and assign the Data Asset
 
 Now if I want to add any future Input Actions, I would just declare the member in the Data Asset, rather than character.h, and then bind the action in the character.cpp file after creating the Input Action and assigning a mapping to it in the IMC.
 
+#### Animations
+For the animations, I used a Blendspace for the locomotion and included that in an Animation Blueprint. 
+
+In the Animation Blueprint, I used a State machine which held two states, _Dead_ and _Alive_. In the _Dead_ state, it just plays the death animation to the output. In the _Alive_ state, I include another state machine which held the locomotion logic and passed its output through an Aim Offset player which then leads to the output node. The transition rules include a boolean named _Is Dead_ which is obtained from the character class using a getter function.
+
+**Alive State:**
+
+![SSCABPA](https://github.com/user-attachments/assets/c914c264-f56a-47c5-944d-4ffe8fc04017)
+
+
+In the _Locomotion_ state machine, I include logic for walking when the character is on the ground and then states for dealing with jumping. The _Grounded_ state is where the Locomotion Blend Space is placed, while the other states hold animations for their respective motions (_Jumping_ holds jump start animation, _Airborne_ holds jump apex, _Landing_ holds jump land). Transition rule from _Grounded_ to _Jumping_ and _Airborne_ to _Landing_ use a boolean named _IsAirborne_ from the character's Character Movement Component.
+
+**Locomotion State:**
+
+![SSCABPAL](https://github.com/user-attachments/assets/b3b88d9b-2560-4866-ba2c-5556d2adbaf8)
+
+
 ### Weapons
 https://github.com/user-attachments/assets/fc377fc7-1d1e-4415-a4df-3f0a65d84ff3
 
