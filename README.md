@@ -186,17 +186,21 @@ For the AI, I created a new AI Controller class based on the AIController class.
 Then I created a new Behavior Tree and Blackboard in the editor.
 
 #### Behavior Tree
-For behavior, it was a simple go to player if seen, shoot, then go back to start location if player is no longer seen behavior.
+For behavior, it was a simple go to player if seen, shoot, then go back to start location if player is no longer seen behavior. 
 
 ![SSAIBT](https://github.com/user-attachments/assets/12f42695-e512-40ba-802d-b31153e7d49f)
 
-The Behavior Tree used a few Blackboard values like the the actor's starting location and Player's last known location to accomplish the behavior.
+The Behavior Tree used a few Blackboard values like a Player object, the AI actor's starting location and Player's last known location to accomplish the behavior.
 
 There are also a few custom Behavior Tree Tasks and Behavior Tree Services that we created that helped make the behavior work and the tree more readable.
 
 **Custom Behavior Tree Tasks:**
-- BTTask_ClearBlackBoardValue: 
-- BTTask_Shoot: 
+- **BTTask_ClearBlackBoardValue**: Calls the `ClearValue()` function and clears the set blackboard key on the service
+- **BTTask_Shoot**: Calls the `Fire()` function of the Pawn that the AI is controlling
+
+**Custom Behavior Tree Services:**
+- **BTService_PlayerLocationIfSeen**: Checks if player is in sight every tick and sets the Player pawn to the Blackboard key. Needed to enter the rest of the tree.
+- **BTService_PlayerLocation**: Updates the Blackboard key with the Player's actor location.
 
 ### HUD
 For the HUDs, I used Widget Blueprints to design the HUDs then in the my PlayerController C++ class I declare the widget classes to reference them to add to viewport using `AddToViewport()`.
