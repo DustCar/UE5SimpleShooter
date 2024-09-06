@@ -25,7 +25,5 @@ protected:
 private:
 	UPROPERTY(EditAnywhere)
 	UBehaviorTree* AIBehaviorTree;
-	// UPROPERTY(EditAnywhere, Category="Aiming")
-	// float AcceptanceRadius = 150;
 	
 };

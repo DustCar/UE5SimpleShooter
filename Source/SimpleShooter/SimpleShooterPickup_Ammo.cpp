@@ -32,8 +32,6 @@ void ASimpleShooterPickup_Ammo::OnOverlap(UPrimitiveComponent* OverlappedCompone
 	OtherCharacterGun->ReplenishAmmo(AmmoReplenishAmt);
 	OtherCharacterGun->SetGunEmpty(false);
 
-	UE_LOG(LogTemp, Warning, TEXT("AmmoReplenished"));
-
 	BaseMesh->SetHiddenInGame(true);
 	SphereComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	BaseMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);

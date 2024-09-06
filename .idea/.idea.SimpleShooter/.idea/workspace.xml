@@ -68,6 +68,8 @@
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.2/Engine/Source/Runtime/Engine/Private/GameplayStatics.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.2/Engine/Source/Runtime/Engine/Public/CollisionQueryParams.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.2/Engine/Source/Runtime/Engine/Public/EngineUtils.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.4/Engine/Source/Runtime/Engine/Classes/GameFramework/Actor.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.4/Engine/Source/Runtime/Engine/Private/Actor.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/SimpleShooter.Target.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/SimpleShooter/BTService_PlayerLocation.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/SimpleShooter/BTService_PlayerLocation.h" root0="FORCE_HIGHLIGHTING" />
@@ -455,6 +457,16 @@
       <workItem from="1723949289335" duration="596000" />
       <workItem from="1723949936747" duration="253000" />
       <workItem from="1723950324106" duration="5296000" />
+      <workItem from="1724439999664" duration="2676000" />
+      <workItem from="1724607600382" duration="2000" />
+      <workItem from="1724626350886" duration="2743000" />
+      <workItem from="1725390285893" duration="1260000" />
+      <workItem from="1725408080006" duration="899000" />
+      <workItem from="1725409006494" duration="6171000" />
+      <workItem from="1725485420898" duration="310000" />
+      <workItem from="1725485752615" duration="8778000" />
+      <workItem from="1725570439568" duration="433000" />
+      <workItem from="1725570894427" duration="8240000" />
     </task>
     <task id="LOCAL-00001" summary="Commit blank project">
       <option name="closed" value="true" />
