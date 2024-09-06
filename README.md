@@ -24,12 +24,12 @@ Since this project only had a portion of the course focused on it, some things w
 
 I used this course as a structured learning experience to get into Unreal Engine as I made the switch to it from Unity after December 2023. It took me some time to complete this project while going on and off (approx. 5 months of active learning) but it did pretty good in exposing me to what Unreal has to offer as well how C++ works with Blueprints. 
 
-## Project Takeaways
+# Project Takeaways
 Simple Shooter had a set of topics that it focuses more on rather than being general. However, it does build upon the previous sections and so I will also cover what I learned from earlier sections in addition to what Simple Shooter taught me.
 
 *_The list that I will be creating below will only be a general takeaway and I may miss some specifics. Additionally, since this course covers beginners in both UE5 and C++, I may ommit some topics about C++ as I am more focused on UE5 additions and have some experience with C++ and programming already._
 
-### Course Takeaways
+## Course Takeaways
 This includes the main topics I learned from the earlier sections of the course.
 
 <ins>General Blueprint and Unreal Logic (Section 2):</ins>
@@ -55,7 +55,7 @@ This includes the main topics I learned from the earlier sections of the course.
 - Introduction to Widget blueprint (HUD)
 - Introduction to FX (Particle System, SoundBase, and Camera Shake
 
-### Simple Shooter Takeaways
+## Simple Shooter Takeaways
 In this section I go over the major points that Simple Shooter focuses on. It revisits many of the topics from previous sections while having a larger focus on animations and AI enemies.
 
 Revisits:
@@ -76,10 +76,10 @@ New Takeaways:
 
 For a course that is meant for beginners, it packs a lot of good introductory info that I can't all mention here but those were just some of the major things that I learned from it. I definitely need more practice but it did good in introducing Unreal Engine to me.
 
-## Project Showcase
+# Project Showcase
 Here will be a set of videos showcasing certain aspects of the project and a brief description of how I went about it.
 
-### Character
+## Character
 https://github.com/user-attachments/assets/fe9ee841-06ab-4245-8e9e-a0fc432d9c78
 
 For character movement I used the Enhance Input Subsystem and formatted it in a way to keep the Character header file cleaner by avoiding to declare Input Actions in it. I did this by saving Input Actions into a Custom Data Asset file and referencing it when binding actions in Character.cpp
@@ -108,7 +108,7 @@ After setup in Character.cpp, I go to the Character BP and assign the Data Asset
 
 Now if I want to add any future Input Actions, I would just declare the member in the Data Asset, rather than character.h, and then bind the action in the character.cpp file after creating the Input Action and assigning a mapping to it in the IMC.
 
-#### Animations
+### Animations
 For the animations, I used a Blendspace for the locomotion and included that in an Animation Blueprint. 
 
 In the Animation Blueprint, I used a State machine which held two states, _Dead_ and _Alive_. In the _Dead_ state, it just plays the death animation to the output. In the _Alive_ state, I include another state machine which held the locomotion logic and passed its output through an Aim Offset player which then leads to the output node. The transition rules include a boolean named _Is Dead_ which is obtained from the character class using a getter function.
@@ -125,7 +125,7 @@ In the _Locomotion_ state machine, I include logic for walking when the characte
 ![SSCABPAL](https://github.com/user-attachments/assets/b3b88d9b-2560-4866-ba2c-5556d2adbaf8)
 
 
-### Weapons
+## Weapons
 https://github.com/user-attachments/assets/fc377fc7-1d1e-4415-a4df-3f0a65d84ff3
 
 For weapons, I created a base Actor class named Gun, which held variables that were common between any gun like a Skeletal Mesh, SFX (Sound, Particles), Ammo, Firing function, and some extra functions and variables. For some functions, like the firing function, they were made to be virtual methods to be able to override the function based on what kind of gun it is.
@@ -144,7 +144,7 @@ I then created Blueprints from the C++ class and this is where I named the gun t
 
 To deal damage to a character, I overrode the `TakeDamage()` function in the character class so that it affects the character's Health component. For Hitscan, it used the results from the trace to directly call `TakeDamage()` for the _DamagedActor_. For the Projectile weapon, it used a projectile actor that used the function `ApplyRadialDamageWithFalloff()` in a hit event callback function I called `OnHit()` which is binded to `OnComponentHit`.
 
-#### Weapon Reloading
+### Weapon Reloading
 For reloading, the Gun class actually holds variables and functions handling a guns ammo including variables for _AmmoInMag_ (current and max) and _ReserveAmmo_ (current and max) and functions for refreshing mags. To reload a weapon from the character, I created a callback function which would call the `RefreshMag()` function of the currently equipped gun, and binded that to a Reload IA.
 
 The way I implemented refresh mags is by creating two local int32 variables which would hold calculated new amounts for ammo in mag and reserve ammo, _NewAmmoInMag_ and _NewReserve_ respectively. Then I would use ternary functions for the _CurrentAmmoInMag_ and _CurrentReserveAmmo_ to set them as either max amount or the calculated amount. 
@@ -157,7 +157,7 @@ The way I implemented refresh mags is by creating two local int32 variables whic
 
 ![SSGRM](https://github.com/user-attachments/assets/f2319623-6de1-4bb9-8705-2d8bb9c0ddb3)
 
-#### Weapon Switching
+### Weapon Switching
 https://github.com/user-attachments/assets/29b918ed-c30c-44d8-9556-fc0dccb2d01f
 
 **Multiple Weapon Setup:**
@@ -182,7 +182,7 @@ For num keys, I used the same code but included a parameter that holds the index
 
 Both functions return early if the character has just swapped, and the numbered returns early if the player is trying to swap to the current weapon.
 
-### Ammo Pickup
+## Ammo Pickup
 https://github.com/user-attachments/assets/9302398b-fc41-468f-854f-44d9c41aecf4
 
 For ammo pickup, I first created a general Actor class named _Pickup_, which just has two components, a mesh and a sphere component for overlap. It also has one virtual method `OnOverlap()` which is the callback function for `OnComponentBeginOverlap` event. Then I created a child class of _Pickup_ for ammo called _Pickup\_Ammo_ and just overrode the `OnOverlap()` function to refill the ammo of the character who picked it up, then hid the pickup.
@@ -195,14 +195,14 @@ And in the gun class I made this function:
 
 For the ammount of ammo to be replenished, the _Pickup\_Ammo_ class has an int32 private variable _AmmoReplenishAmt_ that is editable in BP.
 
-### AI
+## AI
 https://github.com/user-attachments/assets/dfdbda71-9d90-4acc-875a-541128791c47
 
 For the AI, I created a new AI Controller class based on the AIController class. This class holds a `UBehaviorTree*` variable which is editable in BPs and executed in `BeginPlay()`. `BeginPlay()` also sets some Blackboard components.
 
 Then I created a new Behavior Tree and Blackboard in the editor.
 
-#### Behavior Tree
+### Behavior Tree
 For behavior, it was a simple go to player if seen, shoot, then go back to start location if player is no longer seen behavior. 
 
 ![SSAIBT](https://github.com/user-attachments/assets/12f42695-e512-40ba-802d-b31153e7d49f)
@@ -219,7 +219,7 @@ There are also a few custom Behavior Tree Tasks and Behavior Tree Services that 
 - **BTService_PlayerLocationIfSeen**: Checks if player is in sight every tick and sets the Player pawn to the Blackboard key. Needed to enter the rest of the tree.
 - **BTService_PlayerLocation**: Updates the Blackboard key with the Player's actor location.
 
-### HUD
+## HUD
 For the HUDs, I used Widget Blueprints to design the HUDs then in the my PlayerController C++ class I declare the widget classes to reference them to add to viewport using `AddToViewport()`.
 
 I have three Widget Blueprints:
@@ -233,15 +233,15 @@ For the health bar, the functionality is set in the Blueprint and I just used br
 
 ![SSHBPC](https://github.com/user-attachments/assets/d1a427d2-5508-461d-a32f-db626c09fc77)
 
-#### Game Over
+### Game Over
 https://github.com/user-attachments/assets/ebf5383e-5e9f-4140-bd79-bc71f6fbd585
 
 
-#### Win
+### Win
 https://github.com/user-attachments/assets/673750c8-2468-433c-a3c3-9e109a5484fb
 
 
-### Demo
+## Demo
 Here is a really short demo of just going around the map and eliminating the enemies. As seen from the past videos and in this video, the game does spike during certain movements and this could be attributed to the map that I imported in from the course's asset packs, but I would not be surprised if it had to do with my code or machine.
 
 https://github.com/user-attachments/assets/f1d39e44-a5af-4492-aca8-ae20407d4a7f
